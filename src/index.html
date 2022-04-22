@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanks!</title>
+    <title>Quaternions</title>
 </head>
 <body>
     <div id="page">
-        <div class="infoHolder">
-            <span class="info">FPS: </span>
-            <span  class="info" id="fpsInfo">COUNTER</span>
+        <div class="controls">
+            <div class="infoHolder">
+                <span class="info" id="fpsInfo">COUNTER</span>
+            </div>
+            <div style="margin-top: 1em;">
+                <button style="padding: 1em;">Target Axis: 
+                    <span id="targetAxis">W</span>
+                </button>
+            </div>
         </div>
         <canvas class="webgl"></canvas>
     </div>
