@@ -7,10 +7,8 @@ import { CubeReflectionMapping, DoubleSide } from 'three';
 const canvas = document.querySelector('canvas.webgl')
 const page = document.getElementById('page')
 const fpsInfo = document.getElementById('fpsInfo');
-const targetAxis = document.getElementById('targetAxis');
 const clock = new THREE.Clock();
 let delta;
-let counter = 0;
 let targetQuaternion = new THREE.Quaternion();
 
 const sizes = {
@@ -26,6 +24,7 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+// Event listeners
 window.addEventListener('resize', function (e) {
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
@@ -35,20 +34,16 @@ window.addEventListener('resize', function (e) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 })
 
-window.addEventListener('keydown', function (e) {
-    // Don't want to repeatedly modify the direction vectors
-    // This ensures they'll stay normalised
-    if (e.repeat) { return; }
-
-    if (e.key.length === 1) {
-        toggleRotation();
-    }
-})
+document.getElementById('x').addEventListener('change', clampInput);
+document.getElementById('y').addEventListener('change', clampInput);
+document.getElementById('z').addEventListener('change', clampInput);
+document.getElementById('w').addEventListener('change', clampInput);
+document.getElementById('applyQuatBtn').addEventListener('click', setQuaternion);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xf0feff);
 
-const hemiLight = new THREE.HemisphereLight(0xf0feff, 0x7a5527, 0.5);
+const hemiLight = new THREE.HemisphereLight(0xf0feff, 0x7a5527, 0.75);
 const sun = new THREE.DirectionalLight(0xf0feff, 1);
 sun.castShadow = true;
 sun.position.set(
@@ -105,38 +100,54 @@ function tick () {
 
 function updateInfo () {
     fpsInfo.textContent = 
-        `X: ${cube.quaternion.x} \n 
-        Y: ${cube.quaternion.y} \n
-        Z: ${cube.quaternion.z} \n
-        W: ${cube.quaternion.w} \n`;
+        `X: ${cube.quaternion.x.toFixed(7)} \n 
+        Y: ${cube.quaternion.y.toFixed(7)} \n
+        Z: ${cube.quaternion.z.toFixed(7)} \n
+        W: ${cube.quaternion.w.toFixed(7)} \n`;
 }
 
 function updateQuaternion() {
     cube.quaternion.slerp(targetQuaternion, delta);
 }
 
-function toggleRotation () {
-    switch (counter) {
-        case 0:
-            targetQuaternion.set(0, 1, 0, 0)
-            counter++;
-            break;
-        case 1:
-            targetQuaternion.set(0, 0, 1, 0)
-            counter++;
-            break;
-        case 2:
-            targetQuaternion.set(0, 0, 0, 1)
-            counter++;
-            break;
-        case 3:
-            targetQuaternion.set(1, 0, 0, 0)
-            counter = 0;
-            break;
-        
-        default:
-            break;
+function setQuaternion () {
+    const values = {
+        x: parseFloat(document.getElementById('x').value),
+        y: parseFloat(document.getElementById('y').value),
+        z: parseFloat(document.getElementById('z').value),
+        w: parseFloat(document.getElementById('w').value),
     }
 
-    updateQuaternion();
+    for (const prop in values) {
+        if  (isNaN(values[prop])) {
+            document.getElementById(prop).value = 0;
+            values[prop] = 0;
+        }
+    }
+
+    targetQuaternion.set(
+        values.x,
+        values.y,
+        values.z,
+        values.w,
+    )
+
+    targetQuaternion.normalize();
+
+    // Set our DOM elements to the normalised vals
+    document.getElementById('x').value = targetQuaternion.x;
+    document.getElementById('y').value = targetQuaternion.y;
+    document.getElementById('z').value = targetQuaternion.z;
+    document.getElementById('w').value = targetQuaternion.w;
+}
+
+function clampInput () {
+    let val = parseFloat(this.value);
+    if (val < 0) { 
+        this.value = 0; 
+    } else if (val > 1) {
+        this.value = 1;
+    } else {
+        this.value = val;
+    }
 }

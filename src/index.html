@@ -1,24 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quaternions</title>
 </head>
+
 <body>
     <div id="page">
-        <div class="controls">
-            <div class="infoHolder">
-                <span class="info" id="fpsInfo">COUNTER</span>
+        <div class="controlsHolder">
+            <div class="controls">
+                <div class="infoHolder">
+                    <span class="info" id="fpsInfo">COUNTER</span>
+                </div>
+
             </div>
-            <div style="margin-top: 1em;">
-                <button style="padding: 1em;">Target Axis: 
-                    <span id="targetAxis">W</span>
-                </button>
+
+            <div class="controls" style="margin-top: 1em;">
+                <div style="margin-top: 0em;">
+                    <!-- <button style="padding: 1em;">Target Axis: 
+                        <span id="targetAxis">W</span>
+                    </button> -->
+                    <div class="inputHolder">
+                        <span class="info" style="margin-right: 0.5em;">X: </span>
+                        <input type="number" id="x" class="input"/>
+                    </div>
+                    <div class="inputHolder">
+                        <span class="info" style="margin-right: 0.5em;">Y: </span>
+                        <input type="number" id="y" class="input"/>
+                    </div>
+                    <div class="inputHolder">
+                        <span class="info" style="margin-right: 0.5em;">Z: </span>
+                        <input type="number" id="z" class="input"/>
+                    </div>
+                    <div class="inputHolder">
+                        <span class="info" style="margin-right: 0.5em;">W: </span>
+                        <input type="number" id="w" class="input"/>
+                    </div>
+                    <div style="margin-top: 1em;">
+                        <button id="applyQuatBtn" style="padding: 0.25em 0.5em; width: 100%;">Apply</button>
+                    </div>
+
+                    <div style="margin-top: 0.5em;">
+                        <p class="info">Vector inputs will be normalised within a unit sphere - e.g. x: 1, y: 1 will normalise out to length 1.41415...</p>
+                        <p class="info">Setting only a single axis value will have length 1</p>
+                    </div>
+                </div>
             </div>
         </div>
         <canvas class="webgl"></canvas>
     </div>
-</div>
+    </div>
 </body>
+
 </html>

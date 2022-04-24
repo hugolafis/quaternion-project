@@ -1,6 +1,7 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    /* margin: 0px;
+    padding: 0px; */
+    box-sizing: border-box;
 }
 .webl {
     position: fixed;
@@ -10,6 +11,8 @@
 }
 html, body {
     overflow: hidden;
+    margin: 0px;
+    padding: 0px;
 }
 .info {
     font-family: monospace;
@@ -27,9 +30,38 @@ html, body {
 
 }
 .controls {
+
+    padding: 0.5em 1em 0.5em 2em;
+    background: rgba(0,0,0, 0.5);
+    /* background: linear-gradient(
+                    rgba(0, 0, 0, 0.4),
+                    rgba(0, 0, 0, 0.6)
+                ); */
+}
+.controlsHolder {
     position: fixed;
     top: 1%;
     left: 0%;
-    padding: 0.5em 1em 0.5em 2em;
-    background: rgba(0,0,0, 0.25);
+    width: 20em;
+}
+
+.inputHolder {
+    display: flex;
+    margin-top: 0.5em;
+}
+.input {
+    flex: 1;
+    padding: 0.25em;
+}
+
+.inputError {
+    outline: 1px solid red;
+}
+
+.p {
+    margin-bottom: 0.5em;
+}
+
+.p:last-of-type {
+    margin-bottom: 0em;
 }
